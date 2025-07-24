@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pip install playwright
+pip install -r requirements.txt
 python -m playwright install
 
-python outlook-telegram-bot.py    
+python outlook-telegram-bot.py
