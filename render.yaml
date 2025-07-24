@@ -1,0 +1,12 @@
+import socket
+import threading
+
+def dummy_web_port():
+    sock = socket.socket()
+    sock.bind(('0.0.0.0', 8080))  # أي بورت وهمي
+    sock.listen(1)
+    while True:
+        conn, addr = sock.accept()
+        conn.close()
+
+threading.Thread(target=dummy_web_port, daemon=True).start()
