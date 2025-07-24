@@ -7,7 +7,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 with open("outlook.json", "r", encoding="utf-8") as f:
     CREDENTIALS = json.load(f)
 
-TELEGRAM_TOKEN = ""
+TELEGRAM_TOKEN = "8049909443:AAHhg8_19QiEqJLjOB2j0JgLDtQls4K7fIs"
 
 # تخزين المستخدم الحالي
 user_sessions = {}
