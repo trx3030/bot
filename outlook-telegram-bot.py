@@ -1,4 +1,3 @@
-import asyncio
 import json
 from playwright.async_api import async_playwright
 from telegram import Update
@@ -110,5 +109,6 @@ def main():
     print("🤖 البوت شغال... ابدأ بـ /start")
     app.run_polling()
 
+# مفيش asyncio.run هنا
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
