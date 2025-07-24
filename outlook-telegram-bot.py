@@ -2,14 +2,15 @@ import json
 from playwright.async_api import async_playwright
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
+import asyncio
+import os
 
-# تحميل الإيميلات وكلمات السر من ملف خارجي
+# تحميل بيانات الدخول من ملف JSON
 with open("outlook.json", "r", encoding="utf-8") as f:
     CREDENTIALS = json.load(f)
 
-TELEGRAM_TOKEN = "8049909443:AAHhg8_19QiEqJLjOB2j0JgLDtQls4K7fIs"
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "8049909443:AAHhg8_19QiEqJLjOB2j0JgLDtQls4K7fIs")
 
-# تخزين المستخدم الحالي
 user_sessions = {}
 
 async def click_next(page):
@@ -24,7 +25,7 @@ async def click_next(page):
 
 async def fetch_last_outlook_email(email: str, password: str):
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False, slow_mo=50)
+        browser = await p.chromium.launch(headless=True)  # مهم يكون headless=True للسيرفر
         page = await browser.new_page()
         try:
             await page.goto("https://outlook.live.com/owa/")
@@ -85,7 +86,7 @@ async def fetch_last_outlook_email(email: str, password: str):
         finally:
             await browser.close()
 
-# بوت تليجرام
+# دوال البوت
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user_sessions[user_id] = None
@@ -102,13 +103,12 @@ async def handle_email(update: Update, context: ContextTypes.DEFAULT_TYPE):
         result = "❌ الإيميل غير موجود في قاعدة البيانات."
     await update.message.reply_text(result[:4000])
 
-def main():
+async def main():
     app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_email))
     print("🤖 البوت شغال... ابدأ بـ /start")
-    app.run_polling()
+    await app.run_polling()
 
-# مفيش asyncio.run هنا
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
