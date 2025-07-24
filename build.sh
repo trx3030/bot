@@ -1,6 +1,13 @@
 #!/bin/bash
 
-pip install playwright
+# نبدأ بتثبيت المتطلبات الأساسية
+pip install --upgrade pip setuptools wheel
+
+# تثبيت المكتبات من الريكوايرمنتس
+pip install -r requirements.txt
+
+# تثبيت أدوات المتصفح الخاصة بـ Playwright
 python -m playwright install
 
-python outlook-telegram-bot.py    
+# تشغيل البوت
+python outlook-telegram-bot.py
