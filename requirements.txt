@@ -1,3 +1,4 @@
 python-telegram-bot==20.3
 selenium==4.13.0
 playwright==1.42.0
+fix: add python-telegram-bot to requirements
